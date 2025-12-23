@@ -14,7 +14,7 @@ output "bucket_arn" {
 
 output "bucket_region" {
   description = "AWS region where the S3 bucket is located"
-  value       = data.aws_region.current.name
+  value       = data.aws_region.current.id
 }
 
 # =============================================================================
@@ -53,7 +53,7 @@ output "integration_values" {
   description = "All values to provide to Reducto for onboarding. Share this output with your Reducto account team."
   value = {
     bucket_name             = module.s3_bucket.bucket_name
-    region                  = data.aws_region.current.name
+    region                  = data.aws_region.current.id
     account_id              = data.aws_caller_identity.current.account_id
     access_mode             = var.access_mode
     role_arn                = var.access_mode == "assume_role" ? module.iam_assumable_role[0].role_arn : null
