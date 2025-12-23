@@ -1,0 +1,22 @@
+# =============================================================================
+# Example terraform.tfvars for Minimal Setup
+# =============================================================================
+# Copy this file to terraform.tfvars and fill in the values provided by Reducto.
+# =============================================================================
+
+aws_region  = "us-east-1"
+name_prefix = "reducto"
+
+# PLACEHOLDER VALUES - Reducto will provide the actual values during onboarding
+reducto_principal_arns = [
+  "arn:aws:iam::XXXXXXXXXXXX:role/example-role-1", # Replace with actual ARN from Reducto
+  "arn:aws:iam::XXXXXXXXXXXX:role/example-role-2"  # Replace with actual ARN from Reducto
+]
+
+reducto_external_id = "<external-id-from-reducto>" # Replace with actual ExternalId from Reducto
+
+tags = {
+  Environment = "production"
+  Project     = "reducto-hybrid"
+  Team        = "platform"
+}

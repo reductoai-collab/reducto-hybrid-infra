@@ -1,0 +1,29 @@
+# =============================================================================
+# Example terraform.tfvars for PrivateLink Setup
+# =============================================================================
+# Copy this file to terraform.tfvars and fill in the values.
+# =============================================================================
+
+aws_region  = "us-east-1"
+name_prefix = "reducto"
+
+# PLACEHOLDER VALUES - Reducto will provide the actual values during onboarding
+reducto_principal_arns = [
+  "arn:aws:iam::XXXXXXXXXXXX:role/example-role-1", # Replace with actual ARN from Reducto
+  "arn:aws:iam::XXXXXXXXXXXX:role/example-role-2"  # Replace with actual ARN from Reducto
+]
+
+reducto_external_id = "<external-id-from-reducto>" # Replace with actual ExternalId from Reducto
+
+# PrivateLink configuration - replace with your VPC details
+vpc_id     = "vpc-0123456789abcdef0"
+subnet_ids = ["subnet-abc123", "subnet-def456"]
+
+# PLACEHOLDER - Reducto will provide the endpoint service name for your region
+reducto_endpoint_service_name = "com.amazonaws.vpce.us-east-1.vpce-svc-XXXXXXXXXXXX"
+
+tags = {
+  Environment = "production"
+  Project     = "reducto-hybrid"
+  Team        = "platform"
+}

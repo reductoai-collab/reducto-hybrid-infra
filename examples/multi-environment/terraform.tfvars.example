@@ -1,0 +1,27 @@
+# =============================================================================
+# Example terraform.tfvars for Multi-Environment Setup
+# =============================================================================
+# Create separate terraform.tfvars files for each environment:
+# - dev/terraform.tfvars
+# - staging/terraform.tfvars
+# - prod/terraform.tfvars
+# =============================================================================
+
+aws_region  = "us-east-1"
+environment = "prod" # Change to: dev, staging, or prod
+name_prefix = "reducto"
+
+# PLACEHOLDER VALUES - Reducto will provide the actual values during onboarding
+reducto_principal_arns = [
+  "arn:aws:iam::XXXXXXXXXXXX:role/example-role-1", # Replace with actual ARN from Reducto
+  "arn:aws:iam::XXXXXXXXXXXX:role/example-role-2"  # Replace with actual ARN from Reducto
+]
+
+# Each environment may have a different ExternalId - confirm with Reducto
+reducto_external_id = "<external-id-from-reducto>"
+
+tags = {
+  Project   = "reducto-hybrid"
+  Team      = "platform"
+  ManagedBy = "terraform"
+}
