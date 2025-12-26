@@ -13,26 +13,25 @@ Hybrid VPC deployment provides a balance between data sovereignty and operationa
 
 ## Architecture
 
-```
-┌─────────────────────────────────────┐      ┌─────────────────────────────────────┐
-│         Customer AWS Account        │      │         Reducto Infrastructure      │
-│                                     │      │                                     │
-│  ┌─────────────────────────────┐    │      │    ┌─────────────────────────────┐  │
-│  │         S3 Bucket           │◄───┼──────┼────┤      Compute Workers        │  │
-│  │  (documents, artifacts)     │    │      │    │                             │  │
-│  └─────────────────────────────┘    │      │    └─────────────────────────────┘  │
-│              ▲                      │      │                 │                   │
-│              │                      │      │                 │                   │
-│  ┌───────────┴─────────────┐        │      │    ┌────────────┴────────────────┐  │
-│  │   IAM Role (AssumeRole) │        │      │    │     Reducto API + Database  │  │
-│  │   with ExternalId       │        │      │    │                             │  │
-│  └─────────────────────────┘        │      │    └─────────────────────────────┘  │
-│                                     │      │                                     │
-│  ┌─────────────────────────────┐    │      │                                     │
-│  │  VPC Endpoint (optional)   │────┼──────┼────► PrivateLink Service            │
-│  │  for PrivateLink           │    │      │                                     │
-│  └─────────────────────────────┘    │      │                                     │
-└─────────────────────────────────────┘      └─────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph customer["Customer AWS Account"]
+        direction TB
+        s3["S3 Bucket<br/>(documents, artifacts)"]
+        iam["IAM Role (AssumeRole)<br/>with ExternalId"]
+        vpce["VPC Endpoint<br/>(optional)"]
+        iam --> s3
+    end
+
+    subgraph reducto["Reducto Infrastructure"]
+        direction TB
+        workers["Compute Workers"]
+        api["Reducto API + Database"]
+        workers --> api
+    end
+
+    workers <--> s3
+    vpce <-.-> |PrivateLink| api
 ```
 
 ## Prerequisites
