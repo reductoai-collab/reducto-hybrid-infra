@@ -14,7 +14,12 @@ variable "subnet_ids" {
 }
 
 variable "reducto_endpoint_service_name" {
-  description = "Reducto VPC Endpoint Service name (provided by Reducto, region-specific)"
+  description = "Reducto VPC Endpoint Service name (provided by Reducto)"
+  type        = string
+}
+
+variable "reducto_endpoint_service_region" {
+  description = "Reducto VPC Endpoint Service region (provided by Reducto)"
   type        = string
 }
 

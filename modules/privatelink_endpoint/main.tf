@@ -59,6 +59,7 @@ resource "aws_security_group" "endpoint" {
 resource "aws_vpc_endpoint" "reducto" {
   vpc_id            = var.vpc_id
   service_name      = var.reducto_endpoint_service_name
+  service_region    = var.reducto_endpoint_service_region
   vpc_endpoint_type = "Interface"
 
   subnet_ids          = var.subnet_ids
