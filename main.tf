@@ -27,7 +27,7 @@ locals {
   validate_external_id = var.access_mode == "assume_role" && var.reducto_external_id == null ? tobool("reducto_external_id is required when access_mode is 'assume_role'") : true
 
   # Validate PrivateLink configuration
-  validate_privatelink_vpc = var.enable_privatelink && var.vpc_id == null ? tobool("vpc_id is required when enable_privatelink is true") : true
+  validate_privatelink_vpc     = var.enable_privatelink && var.vpc_id == null ? tobool("vpc_id is required when enable_privatelink is true") : true
   validate_privatelink_subnets = var.enable_privatelink && length(var.subnet_ids) == 0 ? tobool("subnet_ids is required when enable_privatelink is true") : true
   validate_privatelink_service = var.enable_privatelink && var.reducto_endpoint_service_name == null ? tobool("reducto_endpoint_service_name is required when enable_privatelink is true") : true
 }
@@ -82,10 +82,11 @@ module "privatelink_endpoint" {
   source = "./modules/privatelink_endpoint"
   count  = var.enable_privatelink ? 1 : 0
 
-  name_prefix                   = var.name_prefix
-  vpc_id                        = var.vpc_id
-  subnet_ids                    = var.subnet_ids
-  reducto_endpoint_service_name = var.reducto_endpoint_service_name
-  security_group_ids            = var.privatelink_security_group_ids
-  tags                          = local.tags
+  name_prefix                     = var.name_prefix
+  vpc_id                          = var.vpc_id
+  subnet_ids                      = var.subnet_ids
+  reducto_endpoint_service_name   = var.reducto_endpoint_service_name
+  reducto_endpoint_service_region = var.reducto_endpoint_service_region
+  security_group_ids              = var.privatelink_security_group_ids
+  tags                            = local.tags
 }

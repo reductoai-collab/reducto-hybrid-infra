@@ -87,7 +87,13 @@ variable "subnet_ids" {
 }
 
 variable "reducto_endpoint_service_name" {
-  description = "Reducto VPC Endpoint Service name (provided by Reducto, region-specific). Required if enable_privatelink = true"
+  description = "Reducto VPC Endpoint Service name (provided by Reducto). Required if enable_privatelink = true"
+  type        = string
+  default     = null
+}
+
+variable "reducto_endpoint_service_region" {
+  description = "Reducto VPC Endpoint Service region (provided by Reducto). Required if enable_privatelink = true"
   type        = string
   default     = null
 }
