@@ -43,7 +43,7 @@ Before using this module, you'll need:
 3. **Values from Reducto** (provided during onboarding):
    - Principal ARNs for Reducto's compute services
    - ExternalId for secure role assumption
-   - Endpoint Service name (if using PrivateLink, region-specific)
+   - Endpoint Service name and region (if using PrivateLink)
 
 Contact your Reducto account team to obtain these values.
 
@@ -113,6 +113,7 @@ Provide this output to your Reducto account team to complete the setup.
 | `vpc_id` | VPC ID for PrivateLink | `string` | `null` | Yes (if PrivateLink) |
 | `subnet_ids` | Subnet IDs for PrivateLink | `list(string)` | `[]` | Yes (if PrivateLink) |
 | `reducto_endpoint_service_name` | Reducto endpoint service name | `string` | `null` | Yes (if PrivateLink) |
+| `reducto_endpoint_service_region` | Reducto endpoint service region | `string` | `null` | Yes (if PrivateLink) |
 | `tags` | Tags to apply to resources | `map(string)` | `{}` | No |
 
 ## Outputs
