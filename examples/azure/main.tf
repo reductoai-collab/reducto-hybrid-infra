@@ -14,7 +14,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.0"
+      version = ">= 4.0"
     }
   }
 }
@@ -80,10 +80,13 @@ locals {
   # Storage account names must be 3-24 chars, lowercase alphanumeric only
   storage_account_name = replace("${var.name_prefix}reducto", "-", "")
 
-  common_tags = merge(var.tags, {
-    ManagedBy = "terraform"
-    Purpose   = "reducto-hybrid-vpc"
-  })
+  common_tags = merge(
+    {
+      ManagedBy = "terraform"
+      Purpose   = "reducto-hybrid-vpc"
+    },
+    var.tags,
+  )
 }
 
 # -----------------------------------------------------------------------------
