@@ -105,6 +105,63 @@ variable "privatelink_security_group_ids" {
 }
 
 # =============================================================================
+# Azure Storage Configuration (Optional)
+# =============================================================================
+
+variable "enable_azure_storage" {
+  description = "Enable Azure Storage for Reducto (creates storage account and container, grants Reducto access)"
+  type        = bool
+  default     = false
+}
+
+variable "azure_resource_group_name" {
+  description = "Name of the Azure resource group where storage resources will be created (required if enable_azure_storage = true)"
+  type        = string
+  default     = null
+}
+
+variable "azure_location" {
+  description = "Azure region where storage resources will be created (required if enable_azure_storage = true)"
+  type        = string
+  default     = null
+}
+
+variable "azure_storage_account_name" {
+  description = "Azure Storage Account name. If not specified, a name will be auto-generated. Must be 3-24 chars, lowercase alphanumeric only"
+  type        = string
+  default     = null
+}
+
+variable "azure_container_name" {
+  description = "Name of the blob container to create for Reducto"
+  type        = string
+  default     = "reducto"
+}
+
+variable "azure_lifecycle_expiration_days" {
+  description = "Number of days until blobs expire and are automatically deleted"
+  type        = number
+  default     = 1
+
+  validation {
+    condition     = var.azure_lifecycle_expiration_days >= 1
+    error_message = "azure_lifecycle_expiration_days must be at least 1"
+  }
+}
+
+variable "reducto_azure_principal_id" {
+  description = "Reducto Azure service principal object ID (required if enable_azure_storage = true). Provided by Reducto during onboarding"
+  type        = string
+  default     = null
+}
+
+variable "azure_role_definition_name" {
+  description = "Azure built-in role to assign. Defaults to 'Storage Blob Data Contributor' which allows read/write/delete of blobs"
+  type        = string
+  default     = "Storage Blob Data Contributor"
+}
+
+# =============================================================================
 # Tags
 # =============================================================================
 

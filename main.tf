@@ -30,6 +30,20 @@ locals {
   validate_privatelink_vpc     = var.enable_privatelink && var.vpc_id == null ? tobool("vpc_id is required when enable_privatelink is true") : true
   validate_privatelink_subnets = var.enable_privatelink && length(var.subnet_ids) == 0 ? tobool("subnet_ids is required when enable_privatelink is true") : true
   validate_privatelink_service = var.enable_privatelink && var.reducto_endpoint_service_name == null ? tobool("reducto_endpoint_service_name is required when enable_privatelink is true") : true
+
+  # Validate Azure Storage configuration
+  validate_azure_resource_group = var.enable_azure_storage && var.azure_resource_group_name == null ? tobool("azure_resource_group_name is required when enable_azure_storage is true") : true
+  validate_azure_location       = var.enable_azure_storage && var.azure_location == null ? tobool("azure_location is required when enable_azure_storage is true") : true
+  validate_azure_principal_id   = var.enable_azure_storage && var.reducto_azure_principal_id == null ? tobool("reducto_azure_principal_id is required when enable_azure_storage is true") : true
+
+  # Azure tags (convert AWS-style tags to Azure format)
+  azure_tags = merge(
+    {
+      "ManagedBy" = "terraform"
+      "Purpose"   = "reducto-hybrid-vpc"
+    },
+    var.tags
+  )
 }
 
 # =============================================================================
@@ -89,4 +103,38 @@ module "privatelink_endpoint" {
   reducto_endpoint_service_region = var.reducto_endpoint_service_region
   security_group_ids              = var.privatelink_security_group_ids
   tags                            = local.tags
+}
+
+# =============================================================================
+# Azure Storage Module (optional)
+# =============================================================================
+
+module "azure_storage" {
+  source = "./modules/azure_storage"
+  count  = var.enable_azure_storage ? 1 : 0
+
+  name_prefix               = var.name_prefix
+  resource_group_name       = var.azure_resource_group_name
+  location                  = var.azure_location
+  storage_account_name      = var.azure_storage_account_name
+  container_name            = var.azure_container_name
+  lifecycle_expiration_days = var.azure_lifecycle_expiration_days
+  tags                      = local.azure_tags
+}
+
+# =============================================================================
+# Azure Storage Access Module (optional)
+# =============================================================================
+
+module "azure_storage_access" {
+  source = "./modules/azure_storage_access"
+  count  = var.enable_azure_storage ? 1 : 0
+
+  name_prefix          = var.name_prefix
+  storage_account_id   = module.azure_storage[0].storage_account_id
+  container_names      = [module.azure_storage[0].container_name]
+  reducto_principal_id = var.reducto_azure_principal_id
+  role_definition_name = var.azure_role_definition_name
+
+  depends_on = [module.azure_storage]
 }
